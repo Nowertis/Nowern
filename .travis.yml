@@ -7,4 +7,4 @@ before_install:
 - docker build -t nowertis/nowern-frontend -f ./WebUI/Dockerfile.dev ./WebUI
 
 script:
-  - docker run -e CI=true nowertis/frontend npm run test
+  - docker run -e CI=true nowertis/nowern-frontend npm run test
