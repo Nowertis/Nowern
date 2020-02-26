@@ -6,7 +6,7 @@ services:
 before_install:
 - docker build -t nowertis/nowern-frontend -f ./WebUI/Dockerfile.dev ./WebUI
 - docker build -t nowertis/nowern-backend -f ./api/Dockerfile.dev ./api
-- docker nginx -t nowertis/nowern-nginx -f ./anginxpi/Dockerfile.dev ./nginx
+- docker build -t nowertis/nowern-nginx -f ./nginx/Dockerfile.dev ./nginx
 
 #script:
 #  - docker run -e CI=true nowertis/nowern-frontend npm run test
