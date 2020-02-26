@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+    depends_on:
+      - frontend
+  frontend:
+    build:
+      context: ./WebUI
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './WebUI:/app'
+      - '/app/node_modules'
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './api:/app'
+      - '/app/node_modules'
+
