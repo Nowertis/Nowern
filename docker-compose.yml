@@ -1,46 +1,45 @@
 version: '3.7'
 
 services:
-   mongodb:
-    image: mongo
-    container_name: mongodb
-    restart: unless-stopped
+  mongo:
+    image: 'mongo'
+    # restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: adminuser
-      MONGO_INITDB_ROOT_PASSWORD: adminpws
-      MONGO_INITDB_DATABASE: nowern
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - ./mongoDb/mongo-volume:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongoDb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+    depends_on:
+      - frontend
 
+  frontend:
+    build:
+      context: ./WebUI
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './WebUI:/app'
+      - '/app/node_modules'
+    depends_on:
+      - api
 
-
-  # nginx:
-  #   restart: always
-  #   build:
-  #     dockerfile: Dockerfile.dev
-  #     context: ./nginx
-  #   ports:
-  #     - '3050:80'
-  #   depends_on:
-  #     - frontend
-
-  # frontend:
-  #   build:
-  #     context: ./WebUI
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - './WebUI:/app'
-  #     - '/app/node_modules'
-
-  # api:
-  #   build:
-  #     context: ./api
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - './api:/app'
-  #     - '/app/node_modules'
-  #   environment:
-  #     - MONGO_HOST=mongodb
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './api:/app'
+      - '/app/node_modules'
+    environment:
+      - MONGO_HOST=mongodb
+    depends_on:
+      - mongo
 
 

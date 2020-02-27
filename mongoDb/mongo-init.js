@@ -1,10 +1,10 @@
 db.createUser({
-    user: 'nowertis',
-    pwd: 'nowertispwd',
-    roles :[
-        {
-            role: "readWrite",
-            db: "nowern"
-        }
-    ]
+  user: "docker",
+  pwd: "dockerpwd",
+  roles: [
+    {
+      role: "readWrite",
+      db : "test"
+    }
+  ]
 });
